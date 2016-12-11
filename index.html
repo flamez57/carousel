@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>轮播</title>
+	<style type="text/css">
+	.hl{width:960px;height:400px;margin:20px auto;}
+	.hl_left{width:700px;height:380px;position:relative;}
+	.hl_left img{width:700px;height:380px;}
+	.hl_right{width:240px;height:115px;margin:15px;}
+	.hl_right img{width:240px;height:115px;}
+	.hulai{ width:90%; height:100%; background-color:#000000; opacity:0.5; -moz-opacity:0.5; filter:alpha(opacity=50);}
+	.hl_left .poster-btn{ position:absolute;top:0;width:100px;height:350px; z-index:10; cursor:pointer;  opacity:0.8}
+	.hl_left .poster-prev-btn{left:0; background: url(btn_l.png) no-repeat center center;}
+	.hl_left .poster-next-btn{right:0; background: url(btn_r.png) no-repeat center center;}
+	</style>
+</head>
+<body>
+<table class="hl">
+	<tr>
+		<td>
+			<div class="hl_left">
+				<div class="poster-btn poster-prev-btn"></div>
+				<img src="1.jpg"style="display:block;"class="flame">
+				<img src="2.jpg"style="display:none;"class="flame">
+				<img src="3.jpg"style="display:none;"class="flame">
+				<img src="4.jpg"style="display:none;"class="flame">
+				<img src="5.jpg"style="display:none;"class="flame">
+				<div class="poster-btn poster-next-btn"></div>
+			</div>
+		</td>
+		<td>
+			<div class="hl_right hulai"style="display:block;"data="1"><img src="1.jpg"></div>
+			<div class="hl_right"style="display:block;"data="2"><img src="2.jpg"></div>
+			<div class="hl_right"style="display:block;"data="3"><img src="3.jpg"></div>
+			<div class="hl_right"style="display:none;"data="4"><img src="4.jpg"></div>
+			<div class="hl_right"style="display:none;"data="5"><img src="5.jpg"></div>
+		</td>
+	</tr>
+</table>
+	<script type="text/javascript"src="jquery-1.8.3.min.js"></script>
+	<script type="text/javascript">
+		/***轮播************************************
+		*@author flamez57                          *
+		*@blog mysweet95.com                       *
+		*版权所有使用注明出处,只用于技术交流,非商业用途*
+		*******************************************/
+		page = 5; //改变他可以任意数量的轮播
+		// 前进
+		function add(){
+		 	num ++;
+		 	if(num==page){
+		 		num = 0;
+		 	}
+		}
+		// 倒退
+		function down(){
+			num --;
+			if(num==-1){
+				num=page-1;
+			}
+		}
+		//左边图片显示的函数
+		function show(num){
+			$('.flame').each(function(){
+				$(this).css('display','none');
+			});
+
+			$('.flame').eq(num).css('display','block');
+		}
+		// 右边图片覆盖阴影的函数
+		function sdow(num){
+			$('.hl_right').each(function(){
+				$(this).removeClass('hulai');
+			})
+			$('.hl_right').eq(num).addClass('hulai');
+		}
+		// 右边图片显示的函数
+		function cut(num){
+			if(num>2 || num<page){
+				$('.hl_right').each(function(){
+					$(this).css('display','none');
+				})
+				numy = num+1;
+				numx = num-1;
+				if(numy==page){
+					numy = 0;
+				}
+				if(numx==-1){
+					numx = page-1;
+				}
+				$('.hl_right').eq(numx).css('display','block');
+				$('.hl_right').eq(num).css('display','block');
+				$('.hl_right').eq(numy).css('display','block');
+			}
+		}
+		num = 0;
+		// 上面三个动作一块动
+		function all(num){
+			show(num);
+			cut(num);
+			sdow(num);
+		}
+		// 定时轮播
+		timer = setInterval(function(){
+			add();
+			all(num);
+		},2000);
+		// 鼠标移出
+		$('.hl').mouseover(function(){
+			clearInterval(timer);
+		})
+		$('.hl').mouseout(function(){
+			timer = setInterval(function(){
+			add();
+			all(num);
+		},2000);
+		})
+		// 点击右边的时候左边对应显示
+		$('.hl_right').click(function(){
+			show($(this).attr('data')-1);
+			sdow($(this).attr('data')-1);
+		})
+		// 倒退轮播
+		$('.poster-prev-btn').click(function(){
+			down();
+			all(num);
+		})
+		// 前进轮播
+		$('.poster-next-btn').click(function(){
+			add();
+			all(num);
+		})
+	</script>
+	
+</body>
+</html>
