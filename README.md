@@ -7,3 +7,10 @@ _____
  QQ：1050355217
 ______
 演示地址   https://flamez57.github.io/carousel/
+```mermaid
+  graph TD;
+      A-->B;
+      A-->C;
+      A-->D;
+      D-->E;
+```
